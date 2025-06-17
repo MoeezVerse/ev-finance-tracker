@@ -65,29 +65,31 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
           <CardTitle className="text-gray-800">Expenses by Category</CardTitle>
           <CardDescription>See where your money goes</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-2 sm:px-6">
           {categoryData.length > 0 ? (
-            <ChartContainer config={chartConfig} className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={categoryData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    dataKey="value"
-                    label={({ name, value }) => `${name}: $${value.toLocaleString()}`}
-                  >
-                    {categoryData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.fill} />
-                    ))}
-                  </Pie>
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                </PieChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+            <div className="w-full overflow-hidden">
+              <ChartContainer config={chartConfig} className="h-[250px] sm:h-[300px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={categoryData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius="70%"
+                      dataKey="value"
+                      label={({ name, value }) => `${name}: $${value.toLocaleString()}`}
+                    >
+                      {categoryData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Pie>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
           ) : (
-            <div className="h-[300px] flex items-center justify-center text-gray-500">
+            <div className="h-[250px] sm:h-[300px] flex items-center justify-center text-gray-500">
               No expense data to display
             </div>
           )}
@@ -99,21 +101,30 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
           <CardTitle className="text-gray-800">Income vs Expenses</CardTitle>
           <CardDescription>Monthly comparison of your finances</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-2 sm:px-6">
           {chartData.length > 0 ? (
-            <ChartContainer config={chartConfig} className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData}>
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="income" fill={COLORS.income} />
-                  <Bar dataKey="expenses" fill={COLORS.expense} />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+            <div className="w-full overflow-hidden">
+              <ChartContainer config={chartConfig} className="h-[250px] sm:h-[300px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData} margin={{ top: 20, right: 10, left: 10, bottom: 20 }}>
+                    <XAxis 
+                      dataKey="month" 
+                      tick={{ fontSize: 10 }} 
+                      interval={0}
+                      angle={-45}
+                      textAnchor="end"
+                      height={60}
+                    />
+                    <YAxis tick={{ fontSize: 10 }} width={40} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Bar dataKey="income" fill={COLORS.income} />
+                    <Bar dataKey="expenses" fill={COLORS.expense} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
           ) : (
-            <div className="h-[300px] flex items-center justify-center text-gray-500">
+            <div className="h-[250px] sm:h-[300px] flex items-center justify-center text-gray-500">
               No data to display
             </div>
           )}
