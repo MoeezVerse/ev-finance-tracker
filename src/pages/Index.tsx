@@ -2,12 +2,14 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, User } from "lucide-react";
 import { ExpenseForm } from "@/components/ExpenseForm";
 import { IncomeForm } from "@/components/IncomeForm";
 import { ExpenseList } from "@/components/ExpenseList";
 import { FinancialChart } from "@/components/FinancialChart";
 import { SavingsSuggestions } from "@/components/SavingsSuggestions";
+import { DashboardView } from "@/components/DashboardView";
+import { ProgressChart } from "@/components/ProgressChart";
 import { useToast } from "@/hooks/use-toast";
 
 export interface Transaction {
@@ -49,6 +51,7 @@ const Index = () => {
   
   const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [showIncomeForm, setShowIncomeForm] = useState(false);
+  const [activeView, setActiveView] = useState('overview');
   const { toast } = useToast();
 
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
@@ -84,88 +87,142 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-      <div className="container mx-auto p-6 space-y-8">
+      <div className="container mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8">
         {/* Header */}
-        <div className="text-center py-8">
-          <h1 className="text-4xl font-bold text-emerald-800 mb-2">FinanceTracker</h1>
-          <p className="text-emerald-600 text-lg">Take control of your financial future</p>
+        <div className="text-center py-4 sm:py-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-emerald-800 mb-2">FinanceTracker</h1>
+          <p className="text-emerald-600 text-base sm:text-lg">Take control of your financial future</p>
         </div>
 
-        {/* Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="border-emerald-200 bg-white/80 backdrop-blur-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-emerald-700">Total Income</CardTitle>
-              <TrendingUp className="h-4 w-4 text-emerald-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-emerald-800">${totalIncome.toLocaleString()}</div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-red-200 bg-white/80 backdrop-blur-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-red-700">Total Expenses</CardTitle>
-              <TrendingDown className="h-4 w-4 text-red-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-red-800">${totalExpenses.toLocaleString()}</div>
-            </CardContent>
-          </Card>
-
-          <Card className={`border-${balance >= 0 ? 'emerald' : 'red'}-200 bg-white/80 backdrop-blur-sm`}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className={`text-sm font-medium text-${balance >= 0 ? 'emerald' : 'red'}-700`}>Balance</CardTitle>
-              <DollarSign className={`h-4 w-4 text-${balance >= 0 ? 'emerald' : 'red'}-600`} />
-            </CardHeader>
-            <CardContent>
-              <div className={`text-2xl font-bold text-${balance >= 0 ? 'emerald' : 'red'}-800`}>
-                ${balance.toLocaleString()}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-blue-200 bg-white/80 backdrop-blur-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-blue-700">Savings Rate</CardTitle>
-              <PiggyBank className="h-4 w-4 text-blue-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-800">{savingsRate.toFixed(1)}%</div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex gap-4 justify-center">
+        {/* Navigation */}
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6">
           <Button 
-            onClick={() => setShowIncomeForm(true)}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white"
+            onClick={() => setActiveView('overview')}
+            variant={activeView === 'overview' ? 'default' : 'outline'}
+            className="text-xs sm:text-sm"
           >
-            <Plus className="mr-2 h-4 w-4" />
-            Add Income
+            <DollarSign className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            Overview
           </Button>
           <Button 
-            onClick={() => setShowExpenseForm(true)}
-            className="bg-red-600 hover:bg-red-700 text-white"
+            onClick={() => setActiveView('dashboard')}
+            variant={activeView === 'dashboard' ? 'default' : 'outline'}
+            className="text-xs sm:text-sm"
           >
-            <Plus className="mr-2 h-4 w-4" />
-            Add Expense
+            <BarChart3 className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            Dashboard
+          </Button>
+          <Button 
+            onClick={() => setActiveView('progress')}
+            variant={activeView === 'progress' ? 'default' : 'outline'}
+            className="text-xs sm:text-sm"
+          >
+            <TrendingUp className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            Progress
+          </Button>
+          <Button 
+            onClick={() => toast({ title: "Login Required", description: "Please connect to Supabase for user authentication." })}
+            variant="outline"
+            className="text-xs sm:text-sm"
+          >
+            <User className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            Login
           </Button>
         </div>
 
-        {/* Charts and Suggestions */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <FinancialChart transactions={transactions} />
-          <SavingsSuggestions 
-            transactions={transactions} 
+        {activeView === 'overview' && (
+          <>
+            {/* Overview Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+              <Card className="border-emerald-200 bg-white/80 backdrop-blur-sm">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium text-emerald-700">Total Income</CardTitle>
+                  <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-600" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-lg sm:text-2xl font-bold text-emerald-800">${totalIncome.toLocaleString()}</div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-red-200 bg-white/80 backdrop-blur-sm">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium text-red-700">Total Expenses</CardTitle>
+                  <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 text-red-600" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-lg sm:text-2xl font-bold text-red-800">${totalExpenses.toLocaleString()}</div>
+                </CardContent>
+              </Card>
+
+              <Card className={`border-${balance >= 0 ? 'emerald' : 'red'}-200 bg-white/80 backdrop-blur-sm`}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className={`text-xs sm:text-sm font-medium text-${balance >= 0 ? 'emerald' : 'red'}-700`}>Balance</CardTitle>
+                  <DollarSign className={`h-3 w-3 sm:h-4 sm:w-4 text-${balance >= 0 ? 'emerald' : 'red'}-600`} />
+                </CardHeader>
+                <CardContent>
+                  <div className={`text-lg sm:text-2xl font-bold text-${balance >= 0 ? 'emerald' : 'red'}-800`}>
+                    ${balance.toLocaleString()}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-blue-200 bg-white/80 backdrop-blur-sm">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium text-blue-700">Savings Rate</CardTitle>
+                  <PiggyBank className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-lg sm:text-2xl font-bold text-blue-800">{savingsRate.toFixed(1)}%</div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <Button 
+                onClick={() => setShowIncomeForm(true)}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white w-full sm:w-auto"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add Income
+              </Button>
+              <Button 
+                onClick={() => setShowExpenseForm(true)}
+                className="bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add Expense
+              </Button>
+            </div>
+
+            {/* Charts and Suggestions */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+              <FinancialChart transactions={transactions} />
+              <SavingsSuggestions 
+                transactions={transactions} 
+                totalIncome={totalIncome}
+                totalExpenses={totalExpenses}
+              />
+            </div>
+
+            {/* Transaction List */}
+            <ExpenseList transactions={transactions} onDelete={deleteTransaction} />
+          </>
+        )}
+
+        {activeView === 'dashboard' && (
+          <DashboardView 
+            transactions={transactions}
             totalIncome={totalIncome}
             totalExpenses={totalExpenses}
+            balance={balance}
+            savingsRate={savingsRate}
           />
-        </div>
+        )}
 
-        {/* Transaction List */}
-        <ExpenseList transactions={transactions} onDelete={deleteTransaction} />
+        {activeView === 'progress' && (
+          <ProgressChart transactions={transactions} />
+        )}
 
         {/* Forms */}
         {showIncomeForm && (
