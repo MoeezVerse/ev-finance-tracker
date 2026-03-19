@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCurrency, CURRENCIES } from '@/contexts/CurrencyContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Save, Plus, Trash2, Target } from 'lucide-react';
+import { ArrowLeft, Save, Plus, Trash2, Target, Globe } from 'lucide-react';
 
 const DEFAULT_CATEGORIES = [
   "Rent", "Groceries", "Transportation", "Utilities", "Entertainment",
