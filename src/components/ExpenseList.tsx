@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Transaction } from "@/pages/Index";
 import { Trash2, TrendingUp, TrendingDown, Search, CalendarIcon, X, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface ExpenseListProps {
   transactions: Transaction[];
