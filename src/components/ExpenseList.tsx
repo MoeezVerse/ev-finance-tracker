@@ -18,6 +18,7 @@ interface ExpenseListProps {
 }
 
 export const ExpenseList = ({ transactions, onDelete }: ExpenseListProps) => {
+  const { formatAmount } = useCurrency();
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
