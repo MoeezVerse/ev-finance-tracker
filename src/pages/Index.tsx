@@ -56,6 +56,7 @@ const Index = () => {
   const [activeView, setActiveView] = useState('overview');
   const { toast } = useToast();
   const { signOut, user } = useAuth();
+  const navigate = useNavigate();
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     const newTransaction = {
       ...transaction,
