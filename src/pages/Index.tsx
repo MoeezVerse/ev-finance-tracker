@@ -122,12 +122,12 @@ const Index = () => {
             Progress
           </Button>
           <Button 
-            onClick={() => toast({ title: "Login Required", description: "Please connect to Supabase for user authentication." })}
+            onClick={signOut}
             variant="outline"
             className="text-xs sm:text-sm"
           >
-            <User className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-            Login
+            <LogOut className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            Logout
           </Button>
         </div>
 
