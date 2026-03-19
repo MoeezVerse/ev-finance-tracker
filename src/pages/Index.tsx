@@ -140,7 +140,7 @@ const Index = () => {
                       </div>
                     </div>
                     <div className={`text-xl sm:text-2xl font-bold tracking-tight ${stat.color}`}>
-                      {stat.display ?? `$${stat.value!.toLocaleString()}`}
+                      {stat.display ?? formatAmount(stat.value!)}
                     </div>
                   </CardContent>
                 </Card>
