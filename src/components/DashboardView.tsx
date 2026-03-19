@@ -18,6 +18,7 @@ interface DashboardViewProps {
 
 export const DashboardView = ({ transactions, totalIncome, totalExpenses, balance, savingsRate }: DashboardViewProps) => {
   const { user } = useAuth();
+  const { formatAmount } = useCurrency();
   const [budgetGoals, setBudgetGoals] = useState<Record<string, number>>({});
 
   useEffect(() => {
