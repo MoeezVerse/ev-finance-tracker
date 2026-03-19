@@ -98,7 +98,10 @@ const Index = () => {
               ))}
             </nav>
 
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1">
+              <Button onClick={toggleTheme} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+                {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+              </Button>
               <Button onClick={() => navigate('/profile')} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
                 <UserCircle className="h-5 w-5" />
               </Button>
