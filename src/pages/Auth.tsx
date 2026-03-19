@@ -10,10 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { LogIn, UserPlus, Mail } from 'lucide-react';
 
 const Auth = () => {
-  const { user, loading } = useAuth();
-  
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50"><p className="text-emerald-700">Loading...</p></div>;
-  if (user) return <Navigate to="/" replace />;
+  const { user, loading: authLoading } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,6 +18,9 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [resetMode, setResetMode] = useState(false);
   const { toast } = useToast();
+
+  if (authLoading) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50"><p className="text-emerald-700">Loading...</p></div>;
+  if (user) return <Navigate to="/" replace />;
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
