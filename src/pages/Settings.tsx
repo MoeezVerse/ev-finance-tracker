@@ -209,7 +209,7 @@ const Settings = () => {
                 )}
               </div>
               <div className="w-full sm:w-32 space-y-1.5">
-                <Label className="text-xs">Amount ($)</Label>
+                <Label className="text-xs">Amount</Label>
                 <Input
                   type="number"
                   step="0.01"
