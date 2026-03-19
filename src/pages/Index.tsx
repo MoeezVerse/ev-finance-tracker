@@ -1,8 +1,9 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, LogOut } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, LogOut, UserCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { ExpenseForm } from "@/components/ExpenseForm";
 import { IncomeForm } from "@/components/IncomeForm";
@@ -55,6 +56,7 @@ const Index = () => {
   const [activeView, setActiveView] = useState('overview');
   const { toast } = useToast();
   const { signOut, user } = useAuth();
+  const navigate = useNavigate();
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     const newTransaction = {
       ...transaction,
@@ -120,6 +122,14 @@ const Index = () => {
           >
             <TrendingUp className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
             Progress
+          </Button>
+          <Button 
+            onClick={() => navigate('/profile')}
+            variant="outline"
+            className="text-xs sm:text-sm"
+          >
+            <UserCircle className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            Profile
           </Button>
           <Button 
             onClick={signOut}
