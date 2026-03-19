@@ -47,12 +47,13 @@ const Index = () => {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { formatAmount } = useCurrency();
 
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     setTransactions(prev => [{ ...transaction, id: Date.now().toString() }, ...prev]);
     toast({
       title: "Transaction Added",
-      description: `${transaction.type === 'income' ? 'Income' : 'Expense'} of $${transaction.amount} recorded.`,
+      description: `${transaction.type === 'income' ? 'Income' : 'Expense'} of ${formatAmount(transaction.amount)} recorded.`,
     });
   };
 
