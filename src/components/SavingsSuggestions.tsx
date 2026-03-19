@@ -95,7 +95,7 @@ export const SavingsSuggestions = ({ transactions, totalIncome, totalExpenses }:
                   <div key={category} className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">{category}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-foreground">${amount.toLocaleString()}</span>
+                      <span className="text-sm font-medium text-foreground">{formatAmount(amount)}</span>
                       <Badge variant="outline" className="text-xs">{percentage.toFixed(1)}%</Badge>
                     </div>
                   </div>

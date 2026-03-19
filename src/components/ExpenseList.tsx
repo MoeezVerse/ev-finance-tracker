@@ -198,7 +198,7 @@ export const ExpenseList = ({ transactions, onDelete }: ExpenseListProps) => {
                 </div>
                 <div className="flex items-center justify-between sm:justify-end gap-3">
                   <span className={`text-sm sm:text-base font-semibold ${transaction.type === 'income' ? 'text-success' : 'text-destructive'}`}>
-                    {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toLocaleString()}
+                    {transaction.type === 'income' ? '+' : '-'}{formatAmount(transaction.amount)}
                   </span>
                   <Button
                     variant="ghost"

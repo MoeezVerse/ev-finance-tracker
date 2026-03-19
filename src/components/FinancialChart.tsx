@@ -52,7 +52,7 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
                     const radius = (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5;
                     const x = (cx as number) + radius * Math.cos(-midAngle * RADIAN);
                     const y = (cy as number) + radius * Math.sin(-midAngle * RADIAN);
-                    return <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>{`$${value.toLocaleString()}`}</text>;
+                    return <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>{formatAmount(value)}</text>;
                   }} labelLine={false}>
                     {categoryData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
                   </Pie>
