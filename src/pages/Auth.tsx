@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { LogIn, UserPlus, Mail } from 'lucide-react';
 
 const Auth = () => {
+  const { user, loading: authLoading } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,6 +18,9 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [resetMode, setResetMode] = useState(false);
   const { toast } = useToast();
+
+  if (authLoading) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50"><p className="text-emerald-700">Loading...</p></div>;
+  if (user) return <Navigate to="/" replace />;
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
