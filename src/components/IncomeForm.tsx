@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Transaction } from "@/pages/Index";
 import { X } from "lucide-react";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface IncomeFormProps {
   onSubmit: (transaction: Omit<Transaction, 'id'>) => void;
