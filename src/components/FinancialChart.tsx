@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
 import { Transaction } from "@/pages/Index";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface FinancialChartProps {
   transactions: Transaction[];
