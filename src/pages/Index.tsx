@@ -145,6 +145,10 @@ const Index = () => {
                 <Plus className="mr-2 h-4 w-4" />
                 Add Expense
               </Button>
+              <Button onClick={() => exportTransactionsCSV(transactions)} variant="outline" className="transition-all">
+                <Download className="mr-2 h-4 w-4" />
+                Export CSV
+              </Button>
             </div>
 
             {/* Charts and Suggestions */}
