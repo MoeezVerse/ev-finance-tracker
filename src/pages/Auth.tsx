@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import { LogIn, UserPlus, Mail } from 'lucide-react';
+import { LogIn, UserPlus, Mail, Wallet } from 'lucide-react';
 
 const Auth = () => {
   const { user, loading: authLoading } = useAuth();
@@ -21,18 +21,19 @@ const Auth = () => {
   const [resetMode, setResetMode] = useState(false);
   const { toast } = useToast();
 
-  if (authLoading) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50"><p className="text-emerald-700">Loading...</p></div>;
+  if (authLoading) return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+    </div>
+  );
   if (user) return <Navigate to="/" replace />;
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       if (resetMode) {
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/reset-password`,
-        });
+        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
         if (error) throw error;
         toast({ title: 'Check your email', description: 'Password reset link has been sent.' });
         setResetMode(false);
@@ -41,14 +42,7 @@ const Auth = () => {
         if (error) throw error;
         toast({ title: 'Welcome back!', description: 'You have been logged in successfully.' });
       } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { display_name: displayName },
-            emailRedirectTo: window.location.origin,
-          },
-        });
+        const { error } = await supabase.auth.signUp({ email, password, options: { data: { display_name: displayName }, emailRedirectTo: window.location.origin } });
         if (error) throw error;
         toast({ title: 'Account created!', description: 'Please check your email to verify your account.' });
       }
@@ -60,62 +54,46 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-white/90 backdrop-blur-sm shadow-xl">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl sm:text-3xl font-bold text-emerald-800">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      {/* Decorative background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-info/5 rounded-full blur-3xl" />
+      </div>
+
+      <Card className="w-full max-w-md glass-card shadow-2xl animate-scale-in relative">
+        <CardHeader className="text-center pb-2">
+          <div className="mx-auto mb-4 h-14 w-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
+            <Wallet className="h-7 w-7 text-primary-foreground" />
+          </div>
+          <CardTitle className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             FinanceTracker
           </CardTitle>
-          <CardDescription className="text-emerald-600">
+          <CardDescription className="text-muted-foreground">
             {resetMode ? 'Reset your password' : isLogin ? 'Sign in to manage your finances' : 'Create your account'}
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <form onSubmit={handleAuth} className="space-y-4">
             {!isLogin && !resetMode && (
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="displayName">Display Name</Label>
-                <Input
-                  id="displayName"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  placeholder="Your name"
-                  required={!isLogin}
-                />
+                <Input id="displayName" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Your name" required={!isLogin} className="h-11" />
               </div>
             )}
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                required
-              />
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required className="h-11" />
             </div>
             {!resetMode && (
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  minLength={6}
-                />
+                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="h-11" />
               </div>
             )}
-            <Button
-              type="submit"
-              className="w-full bg-emerald-600 hover:bg-emerald-700"
-              disabled={loading}
-            >
+            <Button type="submit" className="w-full h-11 font-semibold shadow-lg shadow-primary/20" disabled={loading}>
               {loading ? (
-                'Loading...'
+                <div className="h-4 w-4 rounded-full border-2 border-primary-foreground border-t-transparent animate-spin" />
               ) : resetMode ? (
                 <><Mail className="mr-2 h-4 w-4" /> Send Reset Link</>
               ) : isLogin ? (
@@ -128,22 +106,18 @@ const Auth = () => {
 
           {!resetMode && (
             <>
-              <div className="flex items-center gap-3 my-4">
+              <div className="flex items-center gap-3">
                 <Separator className="flex-1" />
-                <span className="text-xs text-muted-foreground">OR</span>
+                <span className="text-xs text-muted-foreground uppercase tracking-wider">or</span>
                 <Separator className="flex-1" />
               </div>
               <Button
                 type="button"
                 variant="outline"
-                className="w-full"
+                className="w-full h-11 font-medium"
                 onClick={async () => {
-                  const { error } = await lovable.auth.signInWithOAuth("google", {
-                    redirect_uri: window.location.origin,
-                  });
-                  if (error) {
-                    toast({ title: 'Error', description: error.message, variant: 'destructive' });
-                  }
+                  const { error } = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+                  if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
                 }}
               >
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -157,19 +131,16 @@ const Auth = () => {
             </>
           )}
 
-          <div className="mt-4 text-center space-y-2">
+          <div className="text-center space-y-2 pt-2">
             {!resetMode && (
-              <button
-                onClick={() => setResetMode(true)}
-                className="text-sm text-emerald-600 hover:underline"
-              >
+              <button onClick={() => setResetMode(true)} className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Forgot password?
               </button>
             )}
             <div>
               <button
                 onClick={() => { setIsLogin(!isLogin); setResetMode(false); }}
-                className="text-sm text-emerald-600 hover:underline"
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
               </button>
