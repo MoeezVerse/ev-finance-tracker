@@ -231,7 +231,7 @@ const Settings = () => {
                         variant="ghost"
                         size="icon"
                         onClick={() => deleteGoal(index)}
-                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 opacity-0 group-hover:opacity-100 transition-all"
+                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 sm:opacity-0 sm:group-hover:opacity-100 transition-all"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

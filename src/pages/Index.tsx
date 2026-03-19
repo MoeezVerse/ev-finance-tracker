@@ -76,47 +76,47 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
       <header className="sticky top-0 z-40 glass border-b border-border/50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center">
-                <Wallet className="h-5 w-5 text-primary-foreground" />
+        <div className="container mx-auto px-3 sm:px-6">
+          <div className="flex items-center justify-between h-14 sm:h-16">
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+              <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-primary flex items-center justify-center">
+                <Wallet className="h-4 w-4 sm:h-5 sm:w-5 text-primary-foreground" />
               </div>
-              <h1 className="text-lg font-bold text-foreground tracking-tight hidden sm:block">FinanceTracker</h1>
+              <h1 className="text-base sm:text-lg font-bold text-foreground tracking-tight hidden md:block">FinanceTracker</h1>
             </div>
 
-            <nav className="flex items-center gap-1">
+            <nav className="flex items-center gap-0.5 sm:gap-1">
               {navItems.map(({ key, label, icon: Icon }) => (
                 <Button
                   key={key}
                   onClick={() => setActiveView(key)}
                   variant="ghost"
                   size="sm"
-                  className={`text-xs sm:text-sm transition-all ${activeView === key ? 'bg-primary/10 text-primary font-semibold' : 'text-muted-foreground hover:text-foreground'}`}
+                  className={`text-xs sm:text-sm transition-all px-2 sm:px-3 h-8 sm:h-9 ${activeView === key ? 'bg-primary/10 text-primary font-semibold' : 'text-muted-foreground hover:text-foreground'}`}
                 >
-                  <Icon className="mr-1.5 h-4 w-4" />
+                  <Icon className="h-4 w-4 sm:mr-1.5" />
                   <span className="hidden sm:inline">{label}</span>
                 </Button>
               ))}
             </nav>
 
-            <div className="flex items-center gap-1">
-              <Button onClick={toggleTheme} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-                {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+            <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
+              <Button onClick={toggleTheme} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground h-8 w-8 sm:h-10 sm:w-10">
+                {theme === 'light' ? <Moon className="h-4 w-4 sm:h-5 sm:w-5" /> : <Sun className="h-4 w-4 sm:h-5 sm:w-5" />}
               </Button>
-              <Button onClick={() => navigate('/settings')} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-                <Settings className="h-5 w-5" />
+              <Button onClick={() => navigate('/settings')} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground h-8 w-8 sm:h-10 sm:w-10">
+                <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-              <Button onClick={() => navigate('/profile')} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-full">
-                <Avatar className="h-7 w-7">
+              <Button onClick={() => navigate('/profile')} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-full h-8 w-8 sm:h-10 sm:w-10">
+                <Avatar className="h-6 w-6 sm:h-7 sm:w-7">
                   <AvatarImage src={user?.user_metadata?.avatar_url || user?.user_metadata?.picture} alt="Profile" />
-                  <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+                  <AvatarFallback className="bg-primary/10 text-primary text-[10px] sm:text-xs font-semibold">
                     {user?.user_metadata?.display_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || '?'}
                   </AvatarFallback>
                 </Avatar>
               </Button>
-              <Button onClick={signOut} variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive">
-                <LogOut className="h-5 w-5" />
+              <Button onClick={signOut} variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive h-8 w-8 sm:h-10 sm:w-10 hidden sm:inline-flex">
+                <LogOut className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
             </div>
           </div>

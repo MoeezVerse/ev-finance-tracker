@@ -89,7 +89,7 @@ export const ExpenseList = ({ transactions, onDelete }: ExpenseListProps) => {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search by description or category..."
+            placeholder="Search transactions..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-9 h-10"
@@ -202,7 +202,7 @@ export const ExpenseList = ({ transactions, onDelete }: ExpenseListProps) => {
                     variant="ghost"
                     size="icon"
                     onClick={() => onDelete(transaction.id)}
-                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-all h-8 w-8"
+                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 sm:opacity-0 sm:group-hover:opacity-100 transition-all h-8 w-8"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
