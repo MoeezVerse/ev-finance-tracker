@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCurrency, CURRENCIES } from '@/contexts/CurrencyContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Save, Plus, Trash2, Target } from 'lucide-react';
+import { ArrowLeft, Save, Plus, Trash2, Target, Globe } from 'lucide-react';
 
 const DEFAULT_CATEGORIES = [
   "Rent", "Groceries", "Transportation", "Utilities", "Entertainment",
@@ -20,10 +21,50 @@ interface BudgetGoal {
   amount: number;
 }
 
+const CurrencyCard = () => {
+  const { currency, setCurrency } = useCurrency();
+  const { toast } = useToast();
+
+  const handleChange = async (code: string) => {
+    await setCurrency(code);
+    const curr = CURRENCIES.find(c => c.code === code);
+    toast({ title: 'Currency updated', description: `Currency set to ${curr?.name} (${curr?.symbol})` });
+  };
+
+  return (
+    <Card className="glass-card">
+      <CardHeader>
+        <CardTitle className="text-lg text-foreground flex items-center gap-2">
+          <div className="h-8 w-8 rounded-lg bg-info/10 flex items-center justify-center">
+            <Globe className="h-4 w-4 text-info" />
+          </div>
+          Currency
+        </CardTitle>
+        <CardDescription>Choose the currency for displaying amounts</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-1.5">
+          <Label className="text-xs">Display Currency</Label>
+          <select
+            value={currency}
+            onChange={(e) => handleChange(e.target.value)}
+            className="w-full h-11 rounded-md border border-input bg-background px-3 text-sm"
+          >
+            {CURRENCIES.map(c => (
+              <option key={c.code} value={c.code}>{c.symbol} — {c.name} ({c.code})</option>
+            ))}
+          </select>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
 const Settings = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { symbol } = useCurrency();
 
   const [goals, setGoals] = useState<BudgetGoal[]>([]);
   const [loading, setLoading] = useState(true);
@@ -127,10 +168,13 @@ const Settings = () => {
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">Budget Settings</h1>
-            <p className="text-muted-foreground text-sm">Set spending limits for each category</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">Settings</h1>
+            <p className="text-muted-foreground text-sm">Manage your preferences and budget goals</p>
           </div>
         </div>
+
+        {/* Currency Selection */}
+        <CurrencyCard />
 
         {/* Add new goal */}
         <Card className="glass-card">
@@ -166,7 +210,7 @@ const Settings = () => {
                 )}
               </div>
               <div className="w-full sm:w-32 space-y-1.5">
-                <Label className="text-xs">Amount ($)</Label>
+                <Label className="text-xs">Amount</Label>
                 <Input
                   type="number"
                   step="0.01"
@@ -219,7 +263,7 @@ const Settings = () => {
                       <span className="text-sm font-medium text-foreground">{goal.category}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">$</span>
+                      <span className="text-xs text-muted-foreground">{symbol}</span>
                       <Input
                         type="number"
                         step="0.01"

@@ -6,6 +6,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { Transaction } from "@/pages/Index";
 import { Calendar, TrendingUp, BarChart3 } from "lucide-react";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface ProgressChartProps {
   transactions: Transaction[];
@@ -14,6 +15,7 @@ interface ProgressChartProps {
 export const ProgressChart = ({ transactions }: ProgressChartProps) => {
   const [timeFrame, setTimeFrame] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const [chartType, setChartType] = useState<'line' | 'bar'>('line');
+  const { formatAmount } = useCurrency();
 
   const generateChartData = () => {
     const now = new Date();
@@ -98,9 +100,9 @@ export const ProgressChart = ({ transactions }: ProgressChartProps) => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
-          { label: 'Average Change', value: `${trend >= 0 ? '+' : ''}$${trend.toFixed(0)}`, color: trend >= 0 ? 'text-success' : 'text-destructive' },
-          { label: 'Total Income', value: `$${chartData.reduce((s, d) => s + d.income, 0).toLocaleString()}`, color: 'text-success' },
-          { label: 'Total Expenses', value: `$${chartData.reduce((s, d) => s + d.expenses, 0).toLocaleString()}`, color: 'text-destructive' },
+          { label: 'Average Change', value: `${trend >= 0 ? '+' : ''}${formatAmount(Math.abs(Number(trend.toFixed(0))))}`, color: trend >= 0 ? 'text-success' : 'text-destructive' },
+          { label: 'Total Income', value: formatAmount(chartData.reduce((s, d) => s + d.income, 0)), color: 'text-success' },
+          { label: 'Total Expenses', value: formatAmount(chartData.reduce((s, d) => s + d.expenses, 0)), color: 'text-destructive' },
         ].map(stat => (
           <Card key={stat.label} className="glass-card">
             <CardContent className="p-4 text-center">

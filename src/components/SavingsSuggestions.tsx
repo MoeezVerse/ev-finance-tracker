@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Transaction } from "@/pages/Index";
 import { Lightbulb, Target, TrendingUp } from "lucide-react";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface SavingsSuggestionsProps {
   transactions: Transaction[];
@@ -11,6 +12,7 @@ interface SavingsSuggestionsProps {
 }
 
 export const SavingsSuggestions = ({ transactions, totalIncome, totalExpenses }: SavingsSuggestionsProps) => {
+  const { formatAmount } = useCurrency();
   const expenses = transactions.filter(t => t.type === 'expense');
   const categoryTotals = expenses.reduce((acc, t) => { acc[t.category] = (acc[t.category] || 0) + t.amount; return acc; }, {} as Record<string, number>);
   const sortedCategories = Object.entries(categoryTotals).sort(([, a], [, b]) => b - a).slice(0, 3);
@@ -33,7 +35,7 @@ export const SavingsSuggestions = ({ transactions, totalIncome, totalExpenses }:
   }
 
   if (totalExpenses > 0) {
-    suggestions.push({ type: "info", title: "Emergency Fund Goal", description: `Build an emergency fund of $${(totalExpenses * 6).toLocaleString()} (6 months of expenses) for financial security.`, icon: <Lightbulb className="h-4 w-4" /> });
+    suggestions.push({ type: "info", title: "Emergency Fund Goal", description: `Build an emergency fund of ${formatAmount(totalExpenses * 6)} (6 months of expenses) for financial security.`, icon: <Lightbulb className="h-4 w-4" /> });
   }
 
   if (totalIncome > 0) {
@@ -93,7 +95,7 @@ export const SavingsSuggestions = ({ transactions, totalIncome, totalExpenses }:
                   <div key={category} className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">{category}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-foreground">${amount.toLocaleString()}</span>
+                      <span className="text-sm font-medium text-foreground">{formatAmount(amount)}</span>
                       <Badge variant="outline" className="text-xs">{percentage.toFixed(1)}%</Badge>
                     </div>
                   </div>

@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
 import { Transaction } from "@/pages/Index";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface FinancialChartProps {
   transactions: Transaction[];
@@ -11,6 +12,7 @@ interface FinancialChartProps {
 const COLORS = ['hsl(160, 84%, 30%)', 'hsl(217, 91%, 60%)', 'hsl(38, 92%, 50%)', 'hsl(0, 72%, 51%)', 'hsl(280, 65%, 60%)', 'hsl(190, 80%, 42%)'];
 
 export const FinancialChart = ({ transactions }: FinancialChartProps) => {
+  const { formatAmount } = useCurrency();
   const expensesByCategory = transactions
     .filter(t => t.type === 'expense')
     .reduce((acc, t) => { acc[t.category] = (acc[t.category] || 0) + t.amount; return acc; }, {} as Record<string, number>);
@@ -50,7 +52,7 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
                     const radius = (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5;
                     const x = (cx as number) + radius * Math.cos(-midAngle * RADIAN);
                     const y = (cy as number) + radius * Math.sin(-midAngle * RADIAN);
-                    return <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>{`$${value.toLocaleString()}`}</text>;
+                    return <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>{formatAmount(value)}</text>;
                   }} labelLine={false}>
                     {categoryData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
                   </Pie>

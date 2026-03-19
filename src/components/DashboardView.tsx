@@ -6,6 +6,7 @@ import { TrendingUp, TrendingDown, Target, Calendar } from "lucide-react";
 import { Transaction } from "@/pages/Index";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface DashboardViewProps {
   transactions: Transaction[];
@@ -17,6 +18,7 @@ interface DashboardViewProps {
 
 export const DashboardView = ({ transactions, totalIncome, totalExpenses, balance, savingsRate }: DashboardViewProps) => {
   const { user } = useAuth();
+  const { formatAmount } = useCurrency();
   const [budgetGoals, setBudgetGoals] = useState<Record<string, number>>({});
 
   useEffect(() => {
@@ -67,16 +69,16 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
           <CardContent className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-xs sm:text-sm text-muted-foreground">Income</span>
-              <span className="text-sm sm:text-base font-semibold text-success">${monthlyIncome.toLocaleString()}</span>
+              <span className="text-sm sm:text-base font-semibold text-success">{formatAmount(monthlyIncome)}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-xs sm:text-sm text-muted-foreground">Expenses</span>
-              <span className="text-sm sm:text-base font-semibold text-destructive">${monthlyExpenses.toLocaleString()}</span>
+              <span className="text-sm sm:text-base font-semibold text-destructive">{formatAmount(monthlyExpenses)}</span>
             </div>
             <div className="flex justify-between items-center border-t border-border pt-2">
               <span className="text-xs sm:text-sm font-medium text-foreground">Net</span>
               <span className={`text-sm sm:text-base font-bold ${monthlyIncome - monthlyExpenses >= 0 ? 'text-success' : 'text-destructive'}`}>
-                ${(monthlyIncome - monthlyExpenses).toLocaleString()}
+                {formatAmount(monthlyIncome - monthlyExpenses)}
               </span>
             </div>
           </CardContent>
@@ -118,7 +120,7 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
             <div className="flex justify-between text-xs sm:text-sm">
               <span className="text-muted-foreground">Avg Transaction</span>
               <span className="font-semibold text-foreground">
-                ${transactions.length > 0 ? (totalExpenses / (transactions.filter(t => t.type === 'expense').length || 1)).toFixed(0) : '0'}
+                ${transactions.length > 0 ? formatAmount(Number((totalExpenses / (transactions.filter(t => t.type === 'expense').length || 1)).toFixed(0))) : formatAmount(0)}
               </span>
             </div>
             <div className="flex justify-between text-xs sm:text-sm">
@@ -145,8 +147,8 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-foreground">{category}</span>
                     <div className="text-right">
-                      <span className="text-sm font-semibold text-foreground">${amount.toLocaleString()}</span>
-                      <div className="text-xs text-muted-foreground">of ${budget.toLocaleString()}</div>
+                      <span className="text-sm font-semibold text-foreground">{formatAmount(amount)}</span>
+                      <div className="text-xs text-muted-foreground">of {formatAmount(budget)}</div>
                     </div>
                   </div>
                   <Progress value={Math.min(percentage, 100)} className={`h-2 ${percentage > 100 ? '[&>div]:bg-destructive' : ''}`} />
@@ -180,7 +182,7 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
                     <div className="text-sm font-medium text-foreground">{transaction.description}</div>
                     <div className="text-xs text-muted-foreground">{new Date(transaction.date).toLocaleDateString()}</div>
                   </div>
-                  <span className="text-sm font-semibold text-success">+${transaction.amount.toLocaleString()}</span>
+                  <span className="text-sm font-semibold text-success">+{formatAmount(transaction.amount)}</span>
                 </div>
               ))}
             </div>
@@ -204,7 +206,7 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
                     <div className="text-sm font-medium text-foreground">{transaction.description}</div>
                     <div className="text-xs text-muted-foreground">{new Date(transaction.date).toLocaleDateString()}</div>
                   </div>
-                  <span className="text-sm font-semibold text-destructive">-${transaction.amount.toLocaleString()}</span>
+                  <span className="text-sm font-semibold text-destructive">-{formatAmount(transaction.amount)}</span>
                 </div>
               ))}
             </div>

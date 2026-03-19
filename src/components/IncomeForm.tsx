@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Transaction } from "@/pages/Index";
 import { X } from "lucide-react";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface IncomeFormProps {
   onSubmit: (transaction: Omit<Transaction, 'id'>) => void;
@@ -17,6 +18,7 @@ interface IncomeFormProps {
 const incomeCategories = ["Salary", "Freelance", "Investment", "Business", "Rental", "Dividend", "Bonus", "Gift", "Side Hustle", "Other"];
 
 export const IncomeForm = ({ onSubmit, onClose }: IncomeFormProps) => {
+  const { symbol } = useCurrency();
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Salary");
   const [description, setDescription] = useState("");
@@ -44,7 +46,7 @@ export const IncomeForm = ({ onSubmit, onClose }: IncomeFormProps) => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="amount">Amount ($)</Label>
+              <Label htmlFor="amount">Amount ({symbol})</Label>
               <Input id="amount" type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0.00" required className="h-11" />
             </div>
             <div className="space-y-2">

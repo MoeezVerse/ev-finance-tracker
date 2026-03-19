@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, LogOut, Wallet, Moon, Sun, Download, Settings } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ExpenseForm } from "@/components/ExpenseForm";
 import { IncomeForm } from "@/components/IncomeForm";
@@ -46,12 +47,13 @@ const Index = () => {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { formatAmount } = useCurrency();
 
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     setTransactions(prev => [{ ...transaction, id: Date.now().toString() }, ...prev]);
     toast({
       title: "Transaction Added",
-      description: `${transaction.type === 'income' ? 'Income' : 'Expense'} of $${transaction.amount} recorded.`,
+      description: `${transaction.type === 'income' ? 'Income' : 'Expense'} of ${formatAmount(transaction.amount)} recorded.`,
     });
   };
 
@@ -138,7 +140,7 @@ const Index = () => {
                       </div>
                     </div>
                     <div className={`text-xl sm:text-2xl font-bold tracking-tight ${stat.color}`}>
-                      {stat.display ?? `$${stat.value!.toLocaleString()}`}
+                      {stat.display ?? formatAmount(stat.value!)}
                     </div>
                   </CardContent>
                 </Card>

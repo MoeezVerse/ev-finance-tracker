@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Transaction } from "@/pages/Index";
 import { Trash2, TrendingUp, TrendingDown, Search, CalendarIcon, X, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface ExpenseListProps {
   transactions: Transaction[];
@@ -17,6 +18,7 @@ interface ExpenseListProps {
 }
 
 export const ExpenseList = ({ transactions, onDelete }: ExpenseListProps) => {
+  const { formatAmount } = useCurrency();
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
@@ -196,7 +198,7 @@ export const ExpenseList = ({ transactions, onDelete }: ExpenseListProps) => {
                 </div>
                 <div className="flex items-center justify-between sm:justify-end gap-3">
                   <span className={`text-sm sm:text-base font-semibold ${transaction.type === 'income' ? 'text-success' : 'text-destructive'}`}>
-                    {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toLocaleString()}
+                    {transaction.type === 'income' ? '+' : '-'}{formatAmount(transaction.amount)}
                   </span>
                   <Button
                     variant="ghost"
