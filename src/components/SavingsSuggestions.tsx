@@ -12,6 +12,7 @@ interface SavingsSuggestionsProps {
 }
 
 export const SavingsSuggestions = ({ transactions, totalIncome, totalExpenses }: SavingsSuggestionsProps) => {
+  const { formatAmount } = useCurrency();
   const expenses = transactions.filter(t => t.type === 'expense');
   const categoryTotals = expenses.reduce((acc, t) => { acc[t.category] = (acc[t.category] || 0) + t.amount; return acc; }, {} as Record<string, number>);
   const sortedCategories = Object.entries(categoryTotals).sort(([, a], [, b]) => b - a).slice(0, 3);
