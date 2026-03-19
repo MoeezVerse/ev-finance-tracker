@@ -18,6 +18,7 @@ interface ExpenseFormProps {
 const expenseCategories = ["Rent", "Groceries", "Transportation", "Utilities", "Entertainment", "Healthcare", "Shopping", "Dining", "Education", "Insurance", "Other"];
 
 export const ExpenseForm = ({ onSubmit, onClose }: ExpenseFormProps) => {
+  const { symbol } = useCurrency();
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Groceries");
   const [description, setDescription] = useState("");
