@@ -73,7 +73,7 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
             </div>
             <div className="flex justify-between items-center">
               <span className="text-xs sm:text-sm text-muted-foreground">Expenses</span>
-              <span className="text-sm sm:text-base font-semibold text-destructive">${monthlyExpenses.toLocaleString()}</span>
+              <span className="text-sm sm:text-base font-semibold text-destructive">{formatAmount(monthlyExpenses)}</span>
             </div>
             <div className="flex justify-between items-center border-t border-border pt-2">
               <span className="text-xs sm:text-sm font-medium text-foreground">Net</span>
