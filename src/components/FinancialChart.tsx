@@ -12,6 +12,7 @@ interface FinancialChartProps {
 const COLORS = ['hsl(160, 84%, 30%)', 'hsl(217, 91%, 60%)', 'hsl(38, 92%, 50%)', 'hsl(0, 72%, 51%)', 'hsl(280, 65%, 60%)', 'hsl(190, 80%, 42%)'];
 
 export const FinancialChart = ({ transactions }: FinancialChartProps) => {
+  const { formatAmount } = useCurrency();
   const expensesByCategory = transactions
     .filter(t => t.type === 'expense')
     .reduce((acc, t) => { acc[t.category] = (acc[t.category] || 0) + t.amount; return acc; }, {} as Record<string, number>);
