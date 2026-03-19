@@ -43,7 +43,7 @@ const Index = () => {
   const [showIncomeForm, setShowIncomeForm] = useState(false);
   const [activeView, setActiveView] = useState('overview');
   const { toast } = useToast();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
