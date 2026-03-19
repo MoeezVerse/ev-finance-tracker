@@ -124,6 +124,14 @@ const Index = () => {
             Progress
           </Button>
           <Button 
+            onClick={() => navigate('/profile')}
+            variant="outline"
+            className="text-xs sm:text-sm"
+          >
+            <UserCircle className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            Profile
+          </Button>
+          <Button 
             onClick={signOut}
             variant="outline"
             className="text-xs sm:text-sm"
