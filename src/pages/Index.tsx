@@ -104,6 +104,9 @@ const Index = () => {
               <Button onClick={toggleTheme} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
                 {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
               </Button>
+              <Button onClick={() => navigate('/settings')} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+                <Settings className="h-5 w-5" />
+              </Button>
               <Button onClick={() => navigate('/profile')} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-full">
                 <Avatar className="h-7 w-7">
                   <AvatarImage src={user?.user_metadata?.avatar_url || user?.user_metadata?.picture} alt="Profile" />
