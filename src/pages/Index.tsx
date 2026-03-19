@@ -14,6 +14,7 @@ import { SavingsSuggestions } from "@/components/SavingsSuggestions";
 import { DashboardView } from "@/components/DashboardView";
 import { ProgressChart } from "@/components/ProgressChart";
 import { useToast } from "@/hooks/use-toast";
+import { exportTransactionsCSV } from "@/lib/exportCsv";
 
 export interface Transaction {
   id: string;
