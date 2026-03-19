@@ -46,7 +46,7 @@ export const ExpenseForm = ({ onSubmit, onClose }: ExpenseFormProps) => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="amount">Amount ($)</Label>
+              <Label htmlFor="amount">Amount ({symbol})</Label>
               <Input id="amount" type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0.00" required className="h-11" />
             </div>
             <div className="space-y-2">
