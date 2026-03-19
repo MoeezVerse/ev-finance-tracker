@@ -1,8 +1,11 @@
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { TrendingUp, TrendingDown, Target, Calendar } from "lucide-react";
 import { Transaction } from "@/pages/Index";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface DashboardViewProps {
   transactions: Transaction[];
@@ -13,6 +16,21 @@ interface DashboardViewProps {
 }
 
 export const DashboardView = ({ transactions, totalIncome, totalExpenses, balance, savingsRate }: DashboardViewProps) => {
+  const { user } = useAuth();
+  const [budgetGoals, setBudgetGoals] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    if (user) {
+      supabase.from('budget_goals').select('category, amount').eq('user_id', user.id)
+        .then(({ data }) => {
+          if (data) {
+            const goals: Record<string, number> = {};
+            data.forEach(g => { goals[g.category] = Number(g.amount); });
+            setBudgetGoals(goals);
+          }
+        });
+    }
+  }, [user]);
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
