@@ -114,9 +114,9 @@
 
 @layer utilities {
   .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-lg;
+    @apply bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg;
   }
   .glass-card {
-    @apply bg-white/80 backdrop-blur-xl border border-white/30 shadow-lg shadow-black/[0.03];
+    @apply bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-lg shadow-black/[0.03] dark:shadow-black/20;
   }
 }
