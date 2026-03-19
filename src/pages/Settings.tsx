@@ -21,6 +21,45 @@ interface BudgetGoal {
   amount: number;
 }
 
+const CurrencyCard = () => {
+  const { currency, setCurrency } = useCurrency();
+  const { toast } = useToast();
+
+  const handleChange = async (code: string) => {
+    await setCurrency(code);
+    const curr = CURRENCIES.find(c => c.code === code);
+    toast({ title: 'Currency updated', description: `Currency set to ${curr?.name} (${curr?.symbol})` });
+  };
+
+  return (
+    <Card className="glass-card">
+      <CardHeader>
+        <CardTitle className="text-lg text-foreground flex items-center gap-2">
+          <div className="h-8 w-8 rounded-lg bg-info/10 flex items-center justify-center">
+            <Globe className="h-4 w-4 text-info" />
+          </div>
+          Currency
+        </CardTitle>
+        <CardDescription>Choose the currency for displaying amounts</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-1.5">
+          <Label className="text-xs">Display Currency</Label>
+          <select
+            value={currency}
+            onChange={(e) => handleChange(e.target.value)}
+            className="w-full h-11 rounded-md border border-input bg-background px-3 text-sm"
+          >
+            {CURRENCIES.map(c => (
+              <option key={c.code} value={c.code}>{c.symbol} — {c.name} ({c.code})</option>
+            ))}
+          </select>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
 const Settings = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
