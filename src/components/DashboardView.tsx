@@ -182,7 +182,7 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
                     <div className="text-sm font-medium text-foreground">{transaction.description}</div>
                     <div className="text-xs text-muted-foreground">{new Date(transaction.date).toLocaleDateString()}</div>
                   </div>
-                  <span className="text-sm font-semibold text-success">+${transaction.amount.toLocaleString()}</span>
+                  <span className="text-sm font-semibold text-success">+{formatAmount(transaction.amount)}</span>
                 </div>
               ))}
             </div>
