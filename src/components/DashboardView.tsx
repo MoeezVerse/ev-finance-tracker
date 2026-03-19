@@ -147,8 +147,8 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-foreground">{category}</span>
                     <div className="text-right">
-                      <span className="text-sm font-semibold text-foreground">${amount.toLocaleString()}</span>
-                      <div className="text-xs text-muted-foreground">of ${budget.toLocaleString()}</div>
+                      <span className="text-sm font-semibold text-foreground">{formatAmount(amount)}</span>
+                      <div className="text-xs text-muted-foreground">of {formatAmount(budget)}</div>
                     </div>
                   </div>
                   <Progress value={Math.min(percentage, 100)} className={`h-2 ${percentage > 100 ? '[&>div]:bg-destructive' : ''}`} />
