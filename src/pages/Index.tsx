@@ -3,9 +3,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, LogOut, UserCircle, Wallet, Moon, Sun, Download } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, LogOut, Wallet, Moon, Sun, Download } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ExpenseForm } from "@/components/ExpenseForm";
 import { IncomeForm } from "@/components/IncomeForm";
 import { ExpenseList } from "@/components/ExpenseList";
@@ -42,7 +43,7 @@ const Index = () => {
   const [showIncomeForm, setShowIncomeForm] = useState(false);
   const [activeView, setActiveView] = useState('overview');
   const { toast } = useToast();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
@@ -103,8 +104,13 @@ const Index = () => {
               <Button onClick={toggleTheme} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
                 {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
               </Button>
-              <Button onClick={() => navigate('/profile')} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-                <UserCircle className="h-5 w-5" />
+              <Button onClick={() => navigate('/profile')} variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-full">
+                <Avatar className="h-7 w-7">
+                  <AvatarImage src={user?.user_metadata?.avatar_url || user?.user_metadata?.picture} alt="Profile" />
+                  <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+                    {user?.user_metadata?.display_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || '?'}
+                  </AvatarFallback>
+                </Avatar>
               </Button>
               <Button onClick={signOut} variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive">
                 <LogOut className="h-5 w-5" />
