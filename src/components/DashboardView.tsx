@@ -120,7 +120,7 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
             <div className="flex justify-between text-xs sm:text-sm">
               <span className="text-muted-foreground">Avg Transaction</span>
               <span className="font-semibold text-foreground">
-                ${transactions.length > 0 ? (totalExpenses / (transactions.filter(t => t.type === 'expense').length || 1)).toFixed(0) : '0'}
+                ${transactions.length > 0 ? formatAmount(Number((totalExpenses / (transactions.filter(t => t.type === 'expense').length || 1)).toFixed(0))) : formatAmount(0)}
               </span>
             </div>
             <div className="flex justify-between text-xs sm:text-sm">
