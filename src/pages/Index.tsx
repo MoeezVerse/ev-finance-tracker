@@ -54,7 +54,7 @@ const Index = () => {
   const [showIncomeForm, setShowIncomeForm] = useState(false);
   const [activeView, setActiveView] = useState('overview');
   const { toast } = useToast();
-
+  const { signOut, user } = useAuth();
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     const newTransaction = {
       ...transaction,
