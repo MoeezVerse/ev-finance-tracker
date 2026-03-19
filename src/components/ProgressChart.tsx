@@ -6,6 +6,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { Transaction } from "@/pages/Index";
 import { Calendar, TrendingUp, BarChart3 } from "lucide-react";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface ProgressChartProps {
   transactions: Transaction[];
