@@ -28,7 +28,17 @@ const Profile = () => {
     try {
       const { data, error } = await supabase.from('profiles').select('display_name, avatar_url').eq('user_id', user!.id).single();
       if (error) throw error;
-      if (data) { setDisplayName(data.display_name || ''); setAvatarUrl(data.avatar_url); }
+      if (data) {
+        setDisplayName(data.display_name || '');
+        // Use stored avatar, or fall back to Google avatar from user metadata
+        const googleAvatar = user!.user_metadata?.avatar_url || user!.user_metadata?.picture;
+        setAvatarUrl(data.avatar_url || googleAvatar || null);
+
+        // If profile has no avatar but Google provides one, save it
+        if (!data.avatar_url && googleAvatar) {
+          await supabase.from('profiles').update({ avatar_url: googleAvatar }).eq('user_id', user!.id);
+        }
+      }
     } catch (error: any) { console.error('Error fetching profile:', error.message); }
     finally { setLoading(false); }
   };
