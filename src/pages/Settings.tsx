@@ -263,7 +263,7 @@ const Settings = () => {
                       <span className="text-sm font-medium text-foreground">{goal.category}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CurrencySymbol />
+                      <span className="text-xs text-muted-foreground">{symbol}</span>
                       <Input
                         type="number"
                         step="0.01"
