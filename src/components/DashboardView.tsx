@@ -50,7 +50,7 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
 
   const topCategories = Object.entries(expensesByCategory).sort(([,a], [,b]) => b - a).slice(0, 5);
 
-  const budgetGoals: Record<string, number> = { 'Groceries': 500, 'Rent': 1500, 'Entertainment': 200, 'Transportation': 300, 'Utilities': 150 };
+  
 
   return (
     <div className="space-y-6">
