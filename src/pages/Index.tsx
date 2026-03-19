@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, LogOut, UserCircle, Wallet, Moon, Sun } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, LogOut, UserCircle, Wallet, Moon, Sun, Download } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { ExpenseForm } from "@/components/ExpenseForm";
@@ -14,6 +14,7 @@ import { SavingsSuggestions } from "@/components/SavingsSuggestions";
 import { DashboardView } from "@/components/DashboardView";
 import { ProgressChart } from "@/components/ProgressChart";
 import { useToast } from "@/hooks/use-toast";
+import { exportTransactionsCSV } from "@/lib/exportCsv";
 
 export interface Transaction {
   id: string;
@@ -144,6 +145,10 @@ const Index = () => {
               <Button onClick={() => setShowExpenseForm(true)} variant="destructive" className="shadow-lg shadow-destructive/20 transition-all">
                 <Plus className="mr-2 h-4 w-4" />
                 Add Expense
+              </Button>
+              <Button onClick={() => exportTransactionsCSV(transactions)} variant="outline" className="transition-all">
+                <Download className="mr-2 h-4 w-4" />
+                Export CSV
               </Button>
             </div>
 
