@@ -128,10 +128,13 @@ const Settings = () => {
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">Budget Settings</h1>
-            <p className="text-muted-foreground text-sm">Set spending limits for each category</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">Settings</h1>
+            <p className="text-muted-foreground text-sm">Manage your preferences and budget goals</p>
           </div>
         </div>
+
+        {/* Currency Selection */}
+        <CurrencyCard />
 
         {/* Add new goal */}
         <Card className="glass-card">
