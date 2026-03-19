@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, User } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import { ExpenseForm } from "@/components/ExpenseForm";
 import { IncomeForm } from "@/components/IncomeForm";
 import { ExpenseList } from "@/components/ExpenseList";
@@ -53,7 +54,7 @@ const Index = () => {
   const [showIncomeForm, setShowIncomeForm] = useState(false);
   const [activeView, setActiveView] = useState('overview');
   const { toast } = useToast();
-
+  const { signOut, user } = useAuth();
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     const newTransaction = {
       ...transaction,
@@ -121,12 +122,12 @@ const Index = () => {
             Progress
           </Button>
           <Button 
-            onClick={() => toast({ title: "Login Required", description: "Please connect to Supabase for user authentication." })}
+            onClick={signOut}
             variant="outline"
             className="text-xs sm:text-sm"
           >
-            <User className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-            Login
+            <LogOut className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            Logout
           </Button>
         </div>
 
