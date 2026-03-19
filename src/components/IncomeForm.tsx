@@ -18,6 +18,7 @@ interface IncomeFormProps {
 const incomeCategories = ["Salary", "Freelance", "Investment", "Business", "Rental", "Dividend", "Bonus", "Gift", "Side Hustle", "Other"];
 
 export const IncomeForm = ({ onSubmit, onClose }: IncomeFormProps) => {
+  const { symbol } = useCurrency();
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Salary");
   const [description, setDescription] = useState("");
