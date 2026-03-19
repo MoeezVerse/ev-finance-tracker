@@ -6,6 +6,7 @@ import { TrendingUp, TrendingDown, Target, Calendar } from "lucide-react";
 import { Transaction } from "@/pages/Index";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface DashboardViewProps {
   transactions: Transaction[];
