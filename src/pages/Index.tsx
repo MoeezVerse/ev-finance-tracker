@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, TrendingUp, TrendingDown, DollarSign, PiggyBank, BarChart3, LogOut, Wallet, Moon, Sun, Download, Settings } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ExpenseForm } from "@/components/ExpenseForm";
 import { IncomeForm } from "@/components/IncomeForm";
