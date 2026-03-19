@@ -35,7 +35,7 @@ export const SavingsSuggestions = ({ transactions, totalIncome, totalExpenses }:
   }
 
   if (totalExpenses > 0) {
-    suggestions.push({ type: "info", title: "Emergency Fund Goal", description: `Build an emergency fund of $${(totalExpenses * 6).toLocaleString()} (6 months of expenses) for financial security.`, icon: <Lightbulb className="h-4 w-4" /> });
+    suggestions.push({ type: "info", title: "Emergency Fund Goal", description: `Build an emergency fund of ${formatAmount(totalExpenses * 6)} (6 months of expenses) for financial security.`, icon: <Lightbulb className="h-4 w-4" /> });
   }
 
   if (totalIncome > 0) {
