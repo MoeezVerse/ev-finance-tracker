@@ -45,7 +45,13 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
             <ChartContainer config={chartConfig} className="h-[250px] sm:h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={categoryData} cx="50%" cy="50%" outerRadius="70%" dataKey="value" label={({ name, value }) => `${name}: $${value.toLocaleString()}`}>
+                  <Pie data={categoryData} cx="50%" cy="50%" outerRadius="70%" dataKey="value" label={({ name, value, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                    const RADIAN = Math.PI / 180;
+                    const radius = (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5;
+                    const x = (cx as number) + radius * Math.cos(-midAngle * RADIAN);
+                    const y = (cy as number) + radius * Math.sin(-midAngle * RADIAN);
+                    return <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>{`$${value.toLocaleString()}`}</text>;
+                  }} labelLine={false}>
                     {categoryData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
                   </Pie>
                   <ChartTooltip content={<ChartTooltipContent />} />
