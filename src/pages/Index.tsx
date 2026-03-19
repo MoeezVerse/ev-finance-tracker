@@ -43,6 +43,7 @@ const Index = () => {
   const { toast } = useToast();
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     setTransactions(prev => [{ ...transaction, id: Date.now().toString() }, ...prev]);
