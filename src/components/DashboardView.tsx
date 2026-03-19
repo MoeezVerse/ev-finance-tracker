@@ -78,7 +78,7 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
             <div className="flex justify-between items-center border-t border-border pt-2">
               <span className="text-xs sm:text-sm font-medium text-foreground">Net</span>
               <span className={`text-sm sm:text-base font-bold ${monthlyIncome - monthlyExpenses >= 0 ? 'text-success' : 'text-destructive'}`}>
-                ${(monthlyIncome - monthlyExpenses).toLocaleString()}
+                {formatAmount(monthlyIncome - monthlyExpenses)}
               </span>
             </div>
           </CardContent>
