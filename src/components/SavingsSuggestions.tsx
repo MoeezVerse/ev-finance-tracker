@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Transaction } from "@/pages/Index";
 import { Lightbulb, Target, TrendingUp } from "lucide-react";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface SavingsSuggestionsProps {
   transactions: Transaction[];
