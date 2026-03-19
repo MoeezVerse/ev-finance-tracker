@@ -64,6 +64,7 @@ const Settings = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { symbol } = useCurrency();
 
   const [goals, setGoals] = useState<BudgetGoal[]>([]);
   const [loading, setLoading] = useState(true);
