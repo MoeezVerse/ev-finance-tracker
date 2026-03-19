@@ -15,6 +15,7 @@ interface ProgressChartProps {
 export const ProgressChart = ({ transactions }: ProgressChartProps) => {
   const [timeFrame, setTimeFrame] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const [chartType, setChartType] = useState<'line' | 'bar'>('line');
+  const { formatAmount } = useCurrency();
 
   const generateChartData = () => {
     const now = new Date();
