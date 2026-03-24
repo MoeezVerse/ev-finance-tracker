@@ -7,6 +7,7 @@ import { Transaction } from "@/pages/Index";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
+import { BudgetGoals } from "@/components/BudgetGoals";
 
 interface DashboardViewProps {
   transactions: Transaction[];
