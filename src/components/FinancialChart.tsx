@@ -38,54 +38,59 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
   return (
     <div className="space-y-6">
       <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="text-foreground">Expenses by Category</CardTitle>
-          <CardDescription>See where your money goes</CardDescription>
+        <CardHeader className="px-3 sm:px-6">
+          <CardTitle className="text-foreground text-sm sm:text-base">Expenses by Category</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">See where your money goes</CardDescription>
         </CardHeader>
-        <CardContent className="px-2 sm:px-6">
+        <CardContent className="px-1 sm:px-6">
           {categoryData.length > 0 ? (
-            <ChartContainer config={chartConfig} className="h-[250px] sm:h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={categoryData} cx="50%" cy="50%" outerRadius="70%" dataKey="value" label={({ name, value, cx, cy, midAngle, innerRadius, outerRadius }) => {
-                    const RADIAN = Math.PI / 180;
-                    const radius = (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5;
-                    const x = (cx as number) + radius * Math.cos(-midAngle * RADIAN);
-                    const y = (cy as number) + radius * Math.sin(-midAngle * RADIAN);
-                    return <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600}>{formatAmount(value)}</text>;
-                  }} labelLine={false}>
-                    {categoryData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
-                  </Pie>
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                </PieChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <ChartContainer config={chartConfig} className="h-[200px] sm:h-[300px] w-full sm:flex-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={categoryData} cx="50%" cy="50%" outerRadius="70%" dataKey="value" labelLine={false}>
+                      {categoryData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
+                    </Pie>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+              <div className="flex flex-wrap justify-center sm:flex-col gap-2 px-2 sm:px-0">
+                {categoryData.map((entry, index) => (
+                  <div key={index} className="flex items-center gap-1.5 text-xs sm:text-sm">
+                    <div className="h-2.5 w-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: entry.fill }} />
+                    <span className="text-muted-foreground truncate">{entry.name}:</span>
+                    <span className="font-medium text-foreground">{formatAmount(entry.value)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           ) : (
-            <div className="h-[250px] sm:h-[300px] flex items-center justify-center text-muted-foreground">No expense data to display</div>
+            <div className="h-[200px] sm:h-[300px] flex items-center justify-center text-muted-foreground text-sm">No expense data to display</div>
           )}
         </CardContent>
       </Card>
 
       <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="text-foreground">Income vs Expenses</CardTitle>
-          <CardDescription>Monthly comparison of your finances</CardDescription>
+        <CardHeader className="px-3 sm:px-6">
+          <CardTitle className="text-foreground text-sm sm:text-base">Income vs Expenses</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Monthly comparison of your finances</CardDescription>
         </CardHeader>
-        <CardContent className="px-2 sm:px-6">
+        <CardContent className="px-1 sm:px-6">
           {chartData.length > 0 ? (
-            <ChartContainer config={chartConfig} className="h-[250px] sm:h-[300px] w-full">
+            <ChartContainer config={chartConfig} className="h-[220px] sm:h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} margin={{ top: 20, right: 10, left: 10, bottom: 20 }}>
-                  <XAxis dataKey="month" tick={{ fontSize: 10 }} interval={0} angle={-45} textAnchor="end" height={60} />
-                  <YAxis tick={{ fontSize: 10 }} width={40} />
+                <BarChart data={chartData} margin={{ top: 10, right: 5, left: -10, bottom: 30 }}>
+                  <XAxis dataKey="month" tick={{ fontSize: 9 }} interval={0} angle={-45} textAnchor="end" height={50} />
+                  <YAxis tick={{ fontSize: 9 }} width={35} />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="income" fill="hsl(160, 84%, 30%)" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="expenses" fill="hsl(0, 72%, 51%)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="income" fill="hsl(160, 84%, 30%)" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="expenses" fill="hsl(0, 72%, 51%)" radius={[3, 3, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>
           ) : (
-            <div className="h-[250px] sm:h-[300px] flex items-center justify-center text-muted-foreground">No data to display</div>
+            <div className="h-[220px] sm:h-[300px] flex items-center justify-center text-muted-foreground text-sm">No data to display</div>
           )}
         </CardContent>
       </Card>
