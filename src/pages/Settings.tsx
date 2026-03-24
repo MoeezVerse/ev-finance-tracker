@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, Plus, Trash2, Target, Globe } from 'lucide-react';
+import { getSafeErrorMessage } from '@/lib/errorMessages';
 
 const DEFAULT_CATEGORIES = [
   "Rent", "Groceries", "Transportation", "Utilities", "Entertainment",
@@ -113,7 +114,7 @@ const Settings = () => {
       setNewAmount('');
       toast({ title: 'Goal added', description: `Budget goal for ${newCategory} has been set.` });
     } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      toast({ title: 'Error', description: getSafeErrorMessage(error), variant: 'destructive' });
     }
   };
 
@@ -131,7 +132,7 @@ const Settings = () => {
       setGoals(prev => prev.filter((_, i) => i !== index));
       toast({ title: 'Goal removed', description: `Budget goal for ${goal.category} has been deleted.` });
     } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      toast({ title: 'Error', description: getSafeErrorMessage(error), variant: 'destructive' });
     }
   };
 
@@ -146,7 +147,7 @@ const Settings = () => {
       if (failed?.error) throw failed.error;
       toast({ title: 'Goals saved', description: 'All budget goals have been updated.' });
     } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      toast({ title: 'Error', description: getSafeErrorMessage(error), variant: 'destructive' });
     } finally {
       setSaving(false);
     }

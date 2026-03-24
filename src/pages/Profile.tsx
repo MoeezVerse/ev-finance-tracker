@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Camera, Save, User, Mail, Calendar } from 'lucide-react';
+import { getSafeErrorMessage } from '@/lib/errorMessages';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -30,13 +31,22 @@ const Profile = () => {
       if (error) throw error;
       if (data) {
         setDisplayName(data.display_name || '');
-        // Use stored avatar, or fall back to Google avatar from user metadata
         const googleAvatar = user!.user_metadata?.avatar_url || user!.user_metadata?.picture;
-        setAvatarUrl(data.avatar_url || googleAvatar || null);
-
-        // If profile has no avatar but Google provides one, save it
-        if (!data.avatar_url && googleAvatar) {
+        
+        if (data.avatar_url) {
+          // If avatar_url looks like a storage path (not a full URL), generate a signed URL
+          if (!data.avatar_url.startsWith('http')) {
+            const { data: signedData } = await supabase.storage.from('avatars').createSignedUrl(data.avatar_url, 3600);
+            setAvatarUrl(signedData?.signedUrl || googleAvatar || null);
+          } else {
+            // Legacy full URL or external URL (e.g. Google avatar)
+            setAvatarUrl(data.avatar_url);
+          }
+        } else if (googleAvatar) {
+          setAvatarUrl(googleAvatar);
           await supabase.from('profiles').update({ avatar_url: googleAvatar }).eq('user_id', user!.id);
+        } else {
+          setAvatarUrl(null);
         }
       }
     } catch (error: any) { console.error('Error fetching profile:', error.message); }
@@ -55,13 +65,14 @@ const Profile = () => {
       const filePath = `${user!.id}/avatar.${fileExt}`;
       const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file, { upsert: true });
       if (uploadError) throw uploadError;
-      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath);
-      const urlWithCacheBuster = `${publicUrl}?t=${Date.now()}`;
-      const { error: updateError } = await supabase.from('profiles').update({ avatar_url: urlWithCacheBuster }).eq('user_id', user!.id);
+      // Store the file path (not a URL) so we can generate signed URLs on demand
+      const { error: updateError } = await supabase.from('profiles').update({ avatar_url: filePath }).eq('user_id', user!.id);
       if (updateError) throw updateError;
-      setAvatarUrl(urlWithCacheBuster);
+      // Generate a signed URL for immediate display
+      const { data: signedData } = await supabase.storage.from('avatars').createSignedUrl(filePath, 3600);
+      setAvatarUrl(signedData?.signedUrl || null);
       toast({ title: 'Avatar updated', description: 'Your profile picture has been changed.' });
-    } catch (error: any) { toast({ title: 'Upload failed', description: error.message, variant: 'destructive' }); }
+    } catch (error: any) { toast({ title: 'Upload failed', description: getSafeErrorMessage(error), variant: 'destructive' }); }
     finally { setUploading(false); }
   };
 
@@ -71,7 +82,7 @@ const Profile = () => {
       const { error } = await supabase.from('profiles').update({ display_name: displayName }).eq('user_id', user!.id);
       if (error) throw error;
       toast({ title: 'Profile updated', description: 'Your display name has been saved.' });
-    } catch (error: any) { toast({ title: 'Error', description: error.message, variant: 'destructive' }); }
+    } catch (error: any) { toast({ title: 'Error', description: getSafeErrorMessage(error), variant: 'destructive' }); }
     finally { setSaving(false); }
   };
 

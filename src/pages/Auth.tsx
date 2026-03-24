@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { LogIn, UserPlus, Mail, Wallet } from 'lucide-react';
+import { getSafeErrorMessage } from '@/lib/errorMessages';
 
 const Auth = () => {
   const { user, loading: authLoading } = useAuth();
@@ -47,7 +48,7 @@ const Auth = () => {
         toast({ title: 'Account created!', description: 'Please check your email to verify your account.' });
       }
     } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      toast({ title: 'Error', description: getSafeErrorMessage(error), variant: 'destructive' });
     } finally {
       setLoading(false);
     }

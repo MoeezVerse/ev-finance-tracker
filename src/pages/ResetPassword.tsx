@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { getSafeErrorMessage } from '@/lib/errorMessages';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -29,7 +30,7 @@ const ResetPassword = () => {
       toast({ title: 'Password updated!', description: 'You can now sign in with your new password.' });
       navigate('/');
     } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      toast({ title: 'Error', description: getSafeErrorMessage(error), variant: 'destructive' });
     } finally {
       setLoading(false);
     }
