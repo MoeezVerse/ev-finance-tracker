@@ -132,6 +132,9 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
         </Card>
       </div>
 
+      {/* Budget Goals */}
+      <BudgetGoals transactions={transactions} />
+
       {/* Top Spending Categories */}
       <Card className="glass-card">
         <CardHeader>
