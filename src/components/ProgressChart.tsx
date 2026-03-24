@@ -98,49 +98,49 @@ export const ProgressChart = ({ transactions }: ProgressChartProps) => {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
         {[
-          { label: 'Average Change', value: `${trend >= 0 ? '+' : ''}${formatAmount(Math.abs(Number(trend.toFixed(0))))}`, color: trend >= 0 ? 'text-success' : 'text-destructive' },
-          { label: 'Total Income', value: formatAmount(chartData.reduce((s, d) => s + d.income, 0)), color: 'text-success' },
-          { label: 'Total Expenses', value: formatAmount(chartData.reduce((s, d) => s + d.expenses, 0)), color: 'text-destructive' },
+          { label: 'Avg Change', value: `${trend >= 0 ? '+' : ''}${formatAmount(Math.abs(Number(trend.toFixed(0))))}`, color: trend >= 0 ? 'text-success' : 'text-destructive' },
+          { label: 'Income', value: formatAmount(chartData.reduce((s, d) => s + d.income, 0)), color: 'text-success' },
+          { label: 'Expenses', value: formatAmount(chartData.reduce((s, d) => s + d.expenses, 0)), color: 'text-destructive' },
         ].map(stat => (
           <Card key={stat.label} className="glass-card">
-            <CardContent className="p-4 text-center">
-              <div className={`text-lg sm:text-xl font-bold ${stat.color}`}>{stat.value}</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
+            <CardContent className="p-2.5 sm:p-4 text-center">
+              <div className={`text-sm sm:text-xl font-bold ${stat.color} truncate`}>{stat.value}</div>
+              <div className="text-[10px] sm:text-sm text-muted-foreground">{stat.label}</div>
             </CardContent>
           </Card>
         ))}
       </div>
 
       <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="text-base sm:text-lg text-foreground">
+        <CardHeader className="px-3 sm:px-6">
+          <CardTitle className="text-sm sm:text-lg text-foreground">
             {timeFrame.charAt(0).toUpperCase() + timeFrame.slice(1)} Progress
           </CardTitle>
         </CardHeader>
-        <CardContent className="px-2 sm:px-6">
-          <ChartContainer config={chartConfig} className="h-[300px] sm:h-[400px] w-full">
+        <CardContent className="px-1 sm:px-6">
+          <ChartContainer config={chartConfig} className="h-[250px] sm:h-[400px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               {chartType === 'line' ? (
-                <LineChart data={chartData} margin={{ top: 20, right: 10, left: 10, bottom: 60 }}>
+                <LineChart data={chartData} margin={{ top: 10, right: 5, left: -10, bottom: 40 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(155, 15%, 88%)" />
-                  <XAxis dataKey="period" tick={{ fontSize: 10 }} interval={0} angle={-45} textAnchor="end" height={60} />
-                  <YAxis tick={{ fontSize: 10 }} width={40} />
+                  <XAxis dataKey="period" tick={{ fontSize: 8 }} interval={Math.max(0, Math.floor(chartData.length / 6) - 1)} angle={-45} textAnchor="end" height={50} />
+                  <YAxis tick={{ fontSize: 8 }} width={30} />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Line type="monotone" dataKey="income" stroke="hsl(160, 84%, 30%)" strokeWidth={2} dot={{ r: 3 }} />
-                  <Line type="monotone" dataKey="expenses" stroke="hsl(0, 72%, 51%)" strokeWidth={2} dot={{ r: 3 }} />
-                  <Line type="monotone" dataKey="balance" stroke="hsl(217, 91%, 60%)" strokeWidth={2} dot={{ r: 3 }} />
+                  <Line type="monotone" dataKey="income" stroke="hsl(160, 84%, 30%)" strokeWidth={1.5} dot={{ r: 2 }} />
+                  <Line type="monotone" dataKey="expenses" stroke="hsl(0, 72%, 51%)" strokeWidth={1.5} dot={{ r: 2 }} />
+                  <Line type="monotone" dataKey="balance" stroke="hsl(217, 91%, 60%)" strokeWidth={1.5} dot={{ r: 2 }} />
                 </LineChart>
               ) : (
-                <BarChart data={chartData} margin={{ top: 20, right: 10, left: 10, bottom: 60 }}>
+                <BarChart data={chartData} margin={{ top: 10, right: 5, left: -10, bottom: 40 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(155, 15%, 88%)" />
-                  <XAxis dataKey="period" tick={{ fontSize: 10 }} interval={0} angle={-45} textAnchor="end" height={60} />
-                  <YAxis tick={{ fontSize: 10 }} width={40} />
+                  <XAxis dataKey="period" tick={{ fontSize: 8 }} interval={Math.max(0, Math.floor(chartData.length / 6) - 1)} angle={-45} textAnchor="end" height={50} />
+                  <YAxis tick={{ fontSize: 8 }} width={30} />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="income" fill="hsl(160, 84%, 30%)" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="expenses" fill="hsl(0, 72%, 51%)" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="balance" fill="hsl(217, 91%, 60%)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="income" fill="hsl(160, 84%, 30%)" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="expenses" fill="hsl(0, 72%, 51%)" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="balance" fill="hsl(217, 91%, 60%)" radius={[3, 3, 0, 0]} />
                 </BarChart>
               )}
             </ResponsiveContainer>
