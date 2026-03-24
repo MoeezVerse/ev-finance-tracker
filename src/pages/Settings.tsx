@@ -114,7 +114,7 @@ const Settings = () => {
       setNewAmount('');
       toast({ title: 'Goal added', description: `Budget goal for ${newCategory} has been set.` });
     } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      toast({ title: 'Error', description: getSafeErrorMessage(error), variant: 'destructive' });
     }
   };
 
@@ -132,7 +132,7 @@ const Settings = () => {
       setGoals(prev => prev.filter((_, i) => i !== index));
       toast({ title: 'Goal removed', description: `Budget goal for ${goal.category} has been deleted.` });
     } catch (error: any) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      toast({ title: 'Error', description: getSafeErrorMessage(error), variant: 'destructive' });
     }
   };
 
