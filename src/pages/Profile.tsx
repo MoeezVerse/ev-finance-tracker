@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Camera, Save, User, Mail, Calendar } from 'lucide-react';
+import { getSafeErrorMessage } from '@/lib/errorMessages';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -61,7 +62,7 @@ const Profile = () => {
       if (updateError) throw updateError;
       setAvatarUrl(urlWithCacheBuster);
       toast({ title: 'Avatar updated', description: 'Your profile picture has been changed.' });
-    } catch (error: any) { toast({ title: 'Upload failed', description: error.message, variant: 'destructive' }); }
+    } catch (error: any) { toast({ title: 'Upload failed', description: getSafeErrorMessage(error), variant: 'destructive' }); }
     finally { setUploading(false); }
   };
 
@@ -71,7 +72,7 @@ const Profile = () => {
       const { error } = await supabase.from('profiles').update({ display_name: displayName }).eq('user_id', user!.id);
       if (error) throw error;
       toast({ title: 'Profile updated', description: 'Your display name has been saved.' });
-    } catch (error: any) { toast({ title: 'Error', description: error.message, variant: 'destructive' }); }
+    } catch (error: any) { toast({ title: 'Error', description: getSafeErrorMessage(error), variant: 'destructive' }); }
     finally { setSaving(false); }
   };
 
