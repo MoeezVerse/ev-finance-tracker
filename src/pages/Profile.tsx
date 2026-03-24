@@ -56,11 +56,12 @@ const Profile = () => {
       const filePath = `${user!.id}/avatar.${fileExt}`;
       const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file, { upsert: true });
       if (uploadError) throw uploadError;
-      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath);
-      const urlWithCacheBuster = `${publicUrl}?t=${Date.now()}`;
-      const { error: updateError } = await supabase.from('profiles').update({ avatar_url: urlWithCacheBuster }).eq('user_id', user!.id);
+      // Store the file path (not a URL) so we can generate signed URLs on demand
+      const { error: updateError } = await supabase.from('profiles').update({ avatar_url: filePath }).eq('user_id', user!.id);
       if (updateError) throw updateError;
-      setAvatarUrl(urlWithCacheBuster);
+      // Generate a signed URL for immediate display
+      const { data: signedData } = await supabase.storage.from('avatars').createSignedUrl(filePath, 3600);
+      setAvatarUrl(signedData?.signedUrl || null);
       toast({ title: 'Avatar updated', description: 'Your profile picture has been changed.' });
     } catch (error: any) { toast({ title: 'Upload failed', description: getSafeErrorMessage(error), variant: 'destructive' }); }
     finally { setUploading(false); }
