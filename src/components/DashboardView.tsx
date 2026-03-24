@@ -7,6 +7,7 @@ import { Transaction } from "@/pages/Index";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
+import { BudgetGoals } from "@/components/BudgetGoals";
 
 interface DashboardViewProps {
   transactions: Transaction[];
@@ -130,6 +131,9 @@ export const DashboardView = ({ transactions, totalIncome, totalExpenses, balanc
           </CardContent>
         </Card>
       </div>
+
+      {/* Budget Goals */}
+      <BudgetGoals transactions={transactions} />
 
       {/* Top Spending Categories */}
       <Card className="glass-card">
